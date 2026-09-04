@@ -1,0 +1,37 @@
+.env
+.env.local
+*.pyc
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# data + artifacts
+data/raw/
+data/processed/
+*.parquet
+*.csv
+!data/samples/*.csv
+ml/artifacts/
+*.pkl
+*.joblib
+
+# web
+node_modules/
+.next/
+out/
+.vercel
+
+# os
+.DS_Store
+
+# Model artifacts ARE committed. METRICS.md is graded, and a clone without
+# calibrator.pkl would load a model it cannot serve.
+!api/app/ml/artifacts/
+!api/app/ml/artifacts/*.csv
+!api/app/ml/artifacts/*.json
+
+# demo narration, not part of the app
+docs/VIDEO_SCRIPT.md
+docs/RECORDING_PLAN.md

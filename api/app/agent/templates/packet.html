@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Representment — {{ dispute.id }}</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 16mm; }
+  :root {
+    --ink: #16181a; --ink-2: #454b50; --ink-3: #6f767c;
+    --rule: #d8dcdf; --rule-2: #eceef0;
+    --ok: #1c6b45; --weak: #8a5c08; --gap: #96241e;
+    --cite-bg: #eef3f7; --cite-fg: #24506e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 10.5pt/1.55 "Charter", "Georgia", "Times New Roman", serif;
+    color: var(--ink); margin: 0; padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet { max-width: 190mm; margin: 0 auto; padding: 10mm 0; }
+  code, .mono, .ref {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 9px; }
+  .eyebrow {
+    font-size: 7.5pt; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); font-family: "SF Mono", ui-monospace, monospace;
+    display: flex; justify-content: space-between;
+  }
+  h1 { font-size: 17pt; margin: 8px 0 2px; letter-spacing: -.2px; }
+  .sub { color: var(--ink-2); font-size: 9.5pt; margin: 0; }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px 16px; margin: 14px 0 0;
+    border-bottom: 1px solid var(--rule); padding-bottom: 14px;
+  }
+  .facts div { min-width: 0; }
+  .facts dt {
+    font-size: 7pt; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); font-family: "SF Mono", ui-monospace, monospace;
+  }
+  .facts dd { margin: 2px 0 0; font-size: 10pt; font-weight: 600; }
+
+  h2 {
+    font-size: 8pt; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-3); font-family: "SF Mono", ui-monospace, monospace;
+    margin: 22px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--rule-2);
+  }
+
+  .summary { font-size: 10.5pt; line-height: 1.65; margin: 0; }
+
+  ol.claims { margin: 0; padding-left: 0; list-style: none; counter-reset: c; }
+  ol.claims li {
+    counter-increment: c; position: relative;
+    padding: 7px 0 7px 26px; border-bottom: 1px solid var(--rule-2);
+    break-inside: avoid;
+  }
+  ol.claims li::before {
+    content: counter(c); position: absolute; left: 0; top: 8px;
+    font-family: "SF Mono", ui-monospace, monospace; font-size: 8pt;
+    color: var(--ink-3);
+  }
+  .cites { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .ref {
+    font-size: 7.5pt; background: var(--cite-bg); color: var(--cite-fg);
+    padding: 1.5px 5px; border-radius: 2px; white-space: nowrap;
+    cursor: help; border: 1px solid rgba(36,80,110,.14);
+  }
+
+  table.records { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  table.records th {
+    text-align: left; font-size: 7pt; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+    font-family: "SF Mono", ui-monospace, monospace;
+    padding: 0 8px 5px 0; border-bottom: 1px solid var(--rule);
+  }
+  table.records td {
+    padding: 5px 8px 5px 0; vertical-align: top;
+    border-bottom: 1px solid var(--rule-2); color: var(--ink-2);
+  }
+  table.records td.k { white-space: nowrap; }
+  table.records .ref { font-size: 7.5pt; }
+
+  .gaps { margin: 0; padding-left: 16px; }
+  .gaps li { color: var(--weak); margin: 3px 0; font-size: 9.5pt; }
+
+  .attest {
+    margin-top: 20px; padding: 11px 13px; border: 1px solid var(--rule);
+    background: #fafbfc; font-size: 8.5pt; color: var(--ink-2); line-height: 1.5;
+    break-inside: avoid;
+  }
+  .attest strong { color: var(--ink); }
+
+  footer {
+    margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--rule);
+    font-family: "SF Mono", ui-monospace, monospace; font-size: 7.5pt;
+    color: var(--ink-3); display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="eyebrow">
+      <span>Representment submission</span>
+      <span>{{ dispute.rail | upper }} · {{ dispute.phase }}</span>
+    </div>
+    <h1>{{ spec.label }}</h1>
+    <p class="sub">
+      Response to chargeback {{ dispute.processor_dispute_id or dispute.id }} ·
+      Visa {{ spec.visa_code }} / Mastercard {{ spec.mastercard_code }}
+    </p>
+  </header>
+
+  <dl class="facts">
+    <div><dt>Disputed amount</dt><dd>{{ dispute.currency }} {{ "{:,.2f}".format(dispute.amount|float) }}</dd></div>
+    <div><dt>Order</dt><dd>{{ dispute.order_id or "—" }}</dd></div>
+    <div><dt>Dispute opened</dt><dd>{{ dispute.opened_at|string|truncate(10, True, "") }}</dd></div>
+    <div><dt>Respond by</dt><dd>{{ dispute.respond_by|string|truncate(10, True, "") }}</dd></div>
+  </dl>
+
+  <h2>Merchant's position</h2>
+  <p class="summary">{{ packet.summary }}</p>
+
+  <h2>Statement of facts — {{ packet.claims|length }} assertion{{ "" if packet.claims|length == 1 else "s" }}, each sourced</h2>
+  <ol class="claims">
+    {% for claim in packet.claims %}
+    <li>
+      {{ claim.text }}
+      <div class="cites">
+        {% for ref in claim.refs %}
+        <span class="ref" title="{{ lookup(ref) }}">{{ ref }}</span>
+        {% endfor %}
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% if packet.gaps_acknowledged %}
+  <h2>Acknowledged limitations</h2>
+  <ul class="gaps">
+    {% for gap in packet.gaps_acknowledged %}<li>{{ gap }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+
+  <h2>Source records</h2>
+  <table class="records">
+    <thead><tr><th>Reference</th><th>Type</th><th>Record</th></tr></thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td class="k"><span class="ref">{{ record.ref }}</span></td>
+        <td class="k">{{ record.kind.replace("_", " ") }}</td>
+        <td>{{ record.summary }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="attest">
+    <strong>How this document was produced.</strong>
+    Every assertion above cites a record held by the merchant, listed in full in
+    the source table. Claims that could not be traced to a record were removed
+    before this packet was generated
+    {%- if guard.claims_rejected %} — {{ guard.claims_rejected }} were removed on this submission{% endif %}.
+    {% if guard.claims_flagged %}
+    {{ guard.claims_flagged }} detail{{ "" if guard.claims_flagged == 1 else "s" }}
+    could not be matched against the cited record and {{ "is" if guard.claims_flagged == 1 else "are" }}
+    marked for review; this packet is not submitted automatically.
+    {% endif %}
+    The merchant does not contest disputes it cannot evidence.
+  </div>
+
+  <footer>
+    <span>Generated {{ generated_at }}</span>
+    <span>narrative: {{ packet.provider }}</span>
+    <span>{{ records|length }} records · {{ packet.claims|length }} claims</span>
+  </footer>
+
+</div>
+</body>
+</html>

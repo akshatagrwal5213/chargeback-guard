@@ -1,0 +1,22 @@
+# Core API. Fast, reliable, no compiled scientific stack.
+# `make install` installs only this — a reviewer cloning the repo gets a
+# running API in well under a minute.
+#
+# Requires Python 3.11 or newer (the code uses enum.StrEnum).
+#
+# Ranges rather than exact pins: an exact pin resolves against one Python
+# version and fails confusingly on every other.
+
+fastapi>=0.115,<0.117
+uvicorn[standard]>=0.32,<0.36
+pydantic>=2.9,<3
+pydantic-settings>=2.6,<3
+asyncpg>=0.30,<0.31
+httpx>=0.27,<0.29
+python-dotenv>=1.0,<2
+jinja2>=3.1,<4
+
+# dev
+pytest>=8.3,<9
+pytest-asyncio>=0.24,<0.26
+ruff>=0.8

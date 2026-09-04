@@ -1,0 +1,31 @@
+# Model + agent + PDF. Installed separately because these carry compiled
+# wheels and system libraries, and a failure here must not block the API.
+#
+#   make install-ml
+#
+# Needed from day 2 (model) onward. Not required to run or review the API.
+
+-r requirements.txt
+
+# --- day 2: propensity model
+# macOS: the lightgbm wheel needs the OpenMP runtime, which it does not
+# bundle.  brew install libomp
+numpy>=1.26,<3
+pandas>=2.1,<3
+pyarrow>=14            # parquet engine for the training table
+scikit-learn>=1.4,<2
+lightgbm>=4.3,<5
+shap>=0.44,<1
+
+# --- day 8: evidence agent
+# Provider-agnostic: whichever of these is configured in .env is used, and
+# with none configured the packet still composes from templates. See
+# app/agent/provider.py.
+google-genai>=1.0            # Gemini, free tier via aistudio.google.com
+anthropic>=0.40,<1           # optional alternative
+
+# --- day 9: PDF packet
+# WeasyPrint needs native libs. On macOS:  brew install pango libffi
+# If it will not install, the packet renders as HTML and the PDF step is
+# deferred — nothing else depends on it.
+weasyprint>=62,<66

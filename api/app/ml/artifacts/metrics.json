@@ -1,0 +1,93 @@
+{
+  "model_version": "lgbm-1",
+  "trained_at": "2026-08-26T11:21:35.726785+00:00",
+  "rows": 120000,
+  "dispute_rate": 0.0353,
+  "split": "time-based (60/15/25 chronological)",
+  "threshold": 0.18,
+  "honest": {
+    "threshold": 0.18,
+    "precision": 0.3372,
+    "recall": 0.3425,
+    "f1": 0.3398,
+    "pr_auc": 0.289,
+    "roc_auc": 0.8068,
+    "brier": 0.05998,
+    "flagged_share": 0.0751,
+    "positives": 2219,
+    "n": 30000
+  },
+  "random_split_audit": {
+    "threshold": 0.18,
+    "precision": 0.299,
+    "recall": 0.4096,
+    "f1": 0.3457,
+    "pr_auc": 0.2576,
+    "roc_auc": 0.8679,
+    "brier": 0.0305,
+    "flagged_share": 0.0505,
+    "positives": 1106,
+    "n": 30000
+  },
+  "calibration_error": 0.01557,
+  "degenerate": false,
+  "economics": {
+    "capture_cost": 120.0,
+    "win_uplift": 0.15,
+    "recovery": 0.9,
+    "net_value": 212889.73,
+    "false_positives": 1494,
+    "max_flag_rate": 0.15,
+    "flag_rate": 0.0751
+  },
+  "top_features": [
+    {
+      "feature": "txns_card_24h",
+      "mean_abs_shap": 0.85638
+    },
+    {
+      "feature": "three_ds_authenticated",
+      "mean_abs_shap": 0.52556
+    },
+    {
+      "feature": "cvv_match",
+      "mean_abs_shap": 0.33657
+    },
+    {
+      "feature": "account_age_days",
+      "mean_abs_shap": 0.321
+    },
+    {
+      "feature": "txns_card_7d",
+      "mean_abs_shap": 0.17643
+    },
+    {
+      "feature": "email_domain_risk",
+      "mean_abs_shap": 0.15089
+    },
+    {
+      "feature": "avs_match",
+      "mean_abs_shap": 0.12202
+    },
+    {
+      "feature": "prior_disputes",
+      "mean_abs_shap": 0.10091
+    },
+    {
+      "feature": "billing_distance",
+      "mean_abs_shap": 0.07661
+    },
+    {
+      "feature": "amount_z_vs_card",
+      "mean_abs_shap": 0.05695
+    },
+    {
+      "feature": "is_guest",
+      "mean_abs_shap": 0.04991
+    },
+    {
+      "feature": "is_digital",
+      "mean_abs_shap": 0.04665
+    }
+  ]
+}
